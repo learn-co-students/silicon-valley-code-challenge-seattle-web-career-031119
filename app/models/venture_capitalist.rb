@@ -21,4 +21,25 @@ class VentureCapitalist
     }
   end
 
+  def offer_contract(startup, type, investment)
+    FundingRound.new(startup, self, type, investment)
+  end
+
+  def funding_rounds
+    FundingRound.all.select {|round| round.venture_capitalist == self}
+  end
+
+  def portfolio
+    funding_rounds.collect {|round| round.startup}.uniq
+  end
+
+  def biggest_investment
+    funding_rounds.max_by { |round| round.investment }
+  end
+
+  def invested(domain)
+    invested_domains = funding_rounds.select {|round| round.startup.domain == domain}
+    invested_domains.collect {|round| round.investment}.inject(:+)
+  end
+
 end
