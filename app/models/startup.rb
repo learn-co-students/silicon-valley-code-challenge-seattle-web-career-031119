@@ -32,15 +32,7 @@ class Startup
   end
 
   def total_funds
-    investments = self.funding_rounds.map{|round| round.investment}
-    total = 0
-
-    investments.each do |investment|
-      total += investment
-    end
-
-    total
-
+    self.funding_rounds.reduce(0){|acc,round| acc += round.investment}
   end
 
   def investors
